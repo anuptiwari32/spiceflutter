@@ -1,0 +1,86 @@
+name: flutter_restaurant
+description: A new Flutter restaurant application.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.2+3
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.0
+  get_it: ^7.2.0
+  provider: ^6.0.2
+  shared_preferences: ^2.0.5
+  dio: ^4.0.4
+  image_picker: ^0.8.4+4
+  pin_code_fields: ^7.0.0
+  google_maps_flutter_web: ^0.3.2+1
+  google_maps_flutter: ^2.0.7
+  flutter_google_places: ^0.3.0
+  geocoding: ^2.0.0
+  geolocator: ^8.1.1
+  shimmer_animation: ^2.0.0
+  url_launcher: ^6.0.2
+  webview_flutter: ^3.0.0
+  firebase_core: ^1.7.0
+  firebase_messaging: ^11.4.1
+  flutter_local_notifications: ^9.3.1
+  path_provider: ^2.0.1
+  connectivity_plus: ^2.2.0
+  url_strategy: ^0.2.0
+  carousel_slider: ^4.0.0
+  fluro: ^2.0.3
+  universal_html: ^2.0.8
+  universal_ui: ^0.0.8
+  image: ^3.0.2
+  flutter_widget_from_html_core: ^0.8.5+1
+  phone_number: ^0.12.0+1
+  country_code_picker: ^2.0.2
+  flutter_typeahead: ^3.1.3
+  cloud_firestore: ^3.1.6
+  fwfh_selectable_text: ^0.8.3+1
+  circular_countdown_timer: ^0.2.1
+  timezone: ^0.8.0
+  marquee: ^2.2.1
+  flutter_inappwebview: ^5.4.3+7
+  google_api_headers: ^1.3.0
+  avatar_glow: ^2.0.2
+  dropdown_search: ^3.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icon/
+    - assets/image/
+    - assets/language/
+    - assets/json/
+
+  fonts:
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Rubik-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Rubik-Bold.ttf
+          weight: 700
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400

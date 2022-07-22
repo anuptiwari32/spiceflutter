@@ -1,0 +1,134 @@
+{
+  "project_info": {
+    "project_number": "410522356318",
+    "project_id": "e-food-9e6e3",
+    "storage_bucket": "e-food-9e6e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410522356318:android:a392f109799d7e123dc2cf",
+        "android_client_info": {
+          "package_name": "com.u6amtech.efood_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410522356318-0m721qqiuria4ssofsjic7kt7k6ep154.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7Uag9C-fHlCncDgLYtnN08TzIpKzKaj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410522356318-0m721qqiuria4ssofsjic7kt7k6ep154.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "410522356318-43pl1qmq619t6800lmilft67nbq4s8cm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sixamtech.eFood"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410522356318:android:ac5d7b0a83dc873b3dc2cf",
+        "android_client_info": {
+          "package_name": "com.u6amtech.flutter_restaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410522356318-6k8odf0f4da944t2bf4qfft5pdfkk9gm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.u6amtech.flutter_restaurant",
+            "certificate_hash": "5174bb127f738b159ef1dd0a987166a682761bf3"
+          }
+        },
+        {
+          "client_id": "410522356318-vhflq8bvbr727337qort78m3i744l8dp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.u6amtech.flutter_restaurant",
+            "certificate_hash": "87f723e5721c8c8eb805f9a08bf95d5e1e0183b7"
+          }
+        },
+        {
+          "client_id": "410522356318-0m721qqiuria4ssofsjic7kt7k6ep154.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7Uag9C-fHlCncDgLYtnN08TzIpKzKaj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410522356318-0m721qqiuria4ssofsjic7kt7k6ep154.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "410522356318-43pl1qmq619t6800lmilft67nbq4s8cm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sixamtech.eFood"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410522356318:android:d9a16cb328fe320c3dc2cf",
+        "android_client_info": {
+          "package_name": "com.u6amtech.restaurant_delivery_boy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410522356318-0m721qqiuria4ssofsjic7kt7k6ep154.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7Uag9C-fHlCncDgLYtnN08TzIpKzKaj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410522356318-0m721qqiuria4ssofsjic7kt7k6ep154.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "410522356318-43pl1qmq619t6800lmilft67nbq4s8cm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sixamtech.eFood"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
