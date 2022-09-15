@@ -1,9 +1,5 @@
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/table_book_card.dart';
-import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 
 class BookTableScreen extends StatefulWidget {
@@ -25,7 +21,7 @@ class _BookTableScreen extends State<BookTableScreen> {
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("image/main_banner.jpg"),
+            image: AssetImage("assets/image/main_banner.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -39,7 +35,7 @@ class _BookTableScreen extends State<BookTableScreen> {
                 margin: const EdgeInsets.fromLTRB(10, 10, 0, 68),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("image/banner.webp"),
+                    image: AssetImage("assets/image/banner.webp"),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(10),

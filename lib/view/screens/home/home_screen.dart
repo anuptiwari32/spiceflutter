@@ -4,6 +4,8 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/banner_provider.dart';
+import 'package:flutter_restaurant/provider/book_table_provider.dart';
+import 'package:flutter_restaurant/provider/buffet_menu_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
@@ -65,6 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
             .languageCode,
       );
 
+      Provider.of<BuffetMenuProvider>(context, listen: false).getBuffetMenuList(
+        context,
+        reload,
+        Provider.of<LocalizationProvider>(context, listen: false)
+            .locale
+            .languageCode,
+      );
+
       Provider.of<BannerProvider>(context, listen: false)
           .getBannerList(context, reload);
     } else {
@@ -83,6 +93,15 @@ class _HomeScreenState extends State<HomeScreen> {
             .locale
             .languageCode,
       );
+
+      Provider.of<BuffetMenuProvider>(context, listen: false).getBuffetMenuList(
+        context,
+        reload,
+        Provider.of<LocalizationProvider>(context, listen: false)
+            .locale
+            .languageCode,
+      );
+
       Provider.of<BannerProvider>(context, listen: false)
           .getBannerList(context, reload);
     }

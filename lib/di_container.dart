@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_restaurant/data/repository/auth_repo.dart';
 import 'package:flutter_restaurant/data/repository/banner_repo.dart';
+import 'package:flutter_restaurant/data/repository/book_table_repo.dart';
 import 'package:flutter_restaurant/data/repository/cart_repo.dart';
 import 'package:flutter_restaurant/data/repository/category_repo.dart';
 import 'package:flutter_restaurant/data/repository/chat_repo.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_restaurant/data/repository/splash_repo.dart';
 import 'package:flutter_restaurant/data/repository/wishlist_repo.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/banner_provider.dart';
+import 'package:flutter_restaurant/provider/book_table_provider.dart';
 import 'package:flutter_restaurant/provider/buffet_menu_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
@@ -64,6 +66,8 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => OrderRepo(dioClient: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(
+      () => BookTableRepo(dioClient: sl(), sharedPreferences: sl()));
+  sl.registerLazySingleton(
       () => ChatRepo(dioClient: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(
       () => AuthRepo(dioClient: sl(), sharedPreferences: sl()));
@@ -92,6 +96,8 @@ Future<void> init() async {
   sl.registerFactory(() => CartProvider(cartRepo: sl()));
   sl.registerFactory(
       () => OrderProvider(orderRepo: sl(), sharedPreferences: sl()));
+  sl.registerFactory(
+      () => BookTableProvider(tableRepo: sl(), sharedPreferences: sl()));
   sl.registerFactory(
       () => ChatProvider(chatRepo: sl(), notificationRepo: sl()));
   sl.registerFactory(() => AuthProvider(authRepo: sl()));

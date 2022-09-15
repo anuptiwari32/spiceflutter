@@ -15,12 +15,16 @@ class CartProvider extends ChangeNotifier {
   double get amount => _amount;
   bool get isCartUpdate => _isCartUpdate;
 
-  void getCartData() {
+  void getCartData({String type = "Normal"}) {
     _cartList = [];
-    _cartList.addAll(cartRepo.getCartList());
+    _cartList.addAll(cartRepo.getCartList(type: type));
     _cartList.forEach((cart) {
       _amount = _amount + (cart.discountedPrice * cart.quantity);
     });
+  }
+
+  String getCartLength({String type = "Normal"}) {
+    return cartRepo.getCartList(type: type).length.toString();
   }
 
   void addToCart(CartModel cartModel, int index) {
@@ -32,9 +36,9 @@ class CartProvider extends ChangeNotifier {
     // }
     // _amount = _amount + (cartModel.discountedPrice * cartModel.quantity);
     // cartRepo.addToCartList(_cartList);
-    if(index != null && index != -1) {
-      _cartList.replaceRange(index, index+1, [cartModel]);
-    }else {
+    if (index != null && index != -1) {
+      _cartList.replaceRange(index, index + 1, [cartModel]);
+    } else {
       _cartList.add(cartModel);
     }
     cartRepo.addToCartList(_cartList);
@@ -46,7 +50,7 @@ class CartProvider extends ChangeNotifier {
       CartModel cart,
       int productIndex,
       bool fromProductView}) {
-    int index = fromProductView ? productIndex :  _cartList.indexOf(cart);
+    int index = fromProductView ? productIndex : _cartList.indexOf(cart);
     if (isIncrement) {
       _cartList[index].quantity = _cartList[index].quantity + 1;
       _amount = _amount + _cartList[index].discountedPrice;
@@ -60,7 +64,8 @@ class CartProvider extends ChangeNotifier {
   }
 
   void removeFromCart(int index) {
-    _amount = _amount - (_cartList[index].discountedPrice * _cartList[index].quantity);
+    _amount = _amount -
+        (_cartList[index].discountedPrice * _cartList[index].quantity);
     _cartList.removeAt(index);
     cartRepo.addToCartList(_cartList);
     notifyListeners();
@@ -79,40 +84,53 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int isExistInCart(int productId, String variationType, bool isUpdate, int cartIndex,) {
-    for(int index = 0; index<_cartList.length; index++) {
-      if(_cartList[index].product.id == productId && (_cartList[index].variation.length > 0 ? _cartList[index].variation[0].type == variationType : true)) {
-        if((isUpdate && index == cartIndex)) {
+  int isExistInCart(
+    int productId,
+    String variationType,
+    bool isUpdate,
+    int cartIndex,
+  ) {
+    for (int index = 0; index < _cartList.length; index++) {
+      if (_cartList[index].product.id == productId &&
+          (_cartList[index].variation.length > 0
+              ? _cartList[index].variation[0].type == variationType
+              : true)) {
+        if ((isUpdate && index == cartIndex)) {
           return -1;
-        }else {
+        } else {
           return index;
         }
       }
     }
     return -1;
   }
-  int getCartProductIndex (CartModel cartModel) {
-    for(int index = 0; index < _cartList.length; index ++) {
-      if(_cartList[index].product.id == cartModel.product.id && (_cartList[index].variation.length > 0 ? _cartList[index].variation[0].type == cartModel.variation[0].type : true)) {
+
+  int getCartProductIndex(CartModel cartModel) {
+    for (int index = 0; index < _cartList.length; index++) {
+      if (_cartList[index].product.id == cartModel.product.id &&
+          (_cartList[index].variation.length > 0
+              ? _cartList[index].variation[0].type ==
+                  cartModel.variation[0].type
+              : true)) {
         return index;
       }
     }
     return null;
   }
-  int getCartIndex (Product product) {
-    for(int index = 0; index < _cartList.length; index ++) {
-      if(_cartList[index].product.id == product.id ) {
+
+  int getCartIndex(Product product) {
+    for (int index = 0; index < _cartList.length; index++) {
+      if (_cartList[index].product.id == product.id) {
         return index;
       }
     }
     return null;
   }
+
   setCartUpdate(bool isUpdate) {
     _isCartUpdate = isUpdate;
-    if(_isCartUpdate) {
+    if (_isCartUpdate) {
       notifyListeners();
     }
-
   }
-
 }

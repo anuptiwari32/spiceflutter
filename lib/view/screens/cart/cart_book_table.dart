@@ -1,13 +1,20 @@
+import 'package:flutter_restaurant/provider/auth_provider.dart';
+import 'package:flutter_restaurant/provider/book_table_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/data/model/body/place_order_body.dart';
+import 'package:flutter_restaurant/data/model/response/cart_model.dart';
+import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/buffet_menu_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
@@ -21,25 +28,60 @@ import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/cart_product_widget.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
+
 import 'package:provider/provider.dart';
 
-class CartScreen extends StatefulWidget {
+class CartBookTable extends StatefulWidget {
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CartBookTable> createState() => _CartBookTableState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartBookTableState extends State<CartBookTable> {
   final TextEditingController _couponController = TextEditingController();
+  List<Branches> _branches = [];
+  bool _isLoggedIn;
+  List<CartModel> _cartList;
   @override
   void initState() {
     super.initState();
+    _isLoggedIn =
+        Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
+    if (_isLoggedIn) {
+      Provider.of<OrderProvider>(context, listen: false)
+          .initializeTimeSlot(context)
+          .then((value) {
+        Provider.of<OrderProvider>(context, listen: false).sortTime();
+      });
+      _branches = Provider.of<SplashProvider>(context, listen: false)
+          .configModel
+          .branches;
+      if (Provider.of<ProfileProvider>(context, listen: false).userInfoModel ==
+          null) {
+        Provider.of<ProfileProvider>(context, listen: false)
+            .getUserInfo(context);
+      }
+      Provider.of<BookTableProvider>(context, listen: false)
+          .addItemsToCart(context)
+          .then((value) {
+        _cartList = [];
+        _cartList
+            .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
+      });
+    }
+
+    Provider.of<BuffetMenuProvider>(context, listen: false)
+        .getBuffetMenuList(context, true, 'en')
+        .then((value) {
+      Provider.of<BookTableProvider>(context, listen: false)
+          .addItemsToCart(context);
+      _cartList = [];
+      _cartList
+          .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
+    });
+
     Provider.of<CouponProvider>(context, listen: false).removeCouponData(false);
     Provider.of<OrderProvider>(context, listen: false).setOrderType(
-      Provider.of<SplashProvider>(context, listen: false)
-              .configModel
-              .homeDelivery
-          ? 'delivery'
-          : 'take_away',
+      'buffet',
       notify: false,
     );
   }
@@ -47,7 +89,6 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
-
     final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
         GlobalKey<ScaffoldMessengerState>();
 
@@ -64,18 +105,6 @@ class _CartScreenState extends State<CartScreen> {
         return Consumer<CartProvider>(
           builder: (context, cart, child) {
             double deliveryCharge = 0;
-            (Provider.of<OrderProvider>(context, listen: false).orderType ==
-                        'delivery' &&
-                    Provider.of<SplashProvider>(context, listen: false)
-                            .configModel
-                            .deliveryManagement
-                            .status ==
-                        0)
-                ? deliveryCharge =
-                    Provider.of<SplashProvider>(context, listen: false)
-                        .configModel
-                        .deliveryCharge
-                : deliveryCharge = 0;
             List<List<AddOns>> _addOnsList = [];
             List<bool> _availableList = [];
             double _itemPrice = 0;
@@ -116,13 +145,6 @@ class _CartScreenState extends State<CartScreen> {
                 deliveryCharge;
 
             double _orderAmount = _itemPrice + _addOns;
-
-            bool _kmWiseCharge =
-                Provider.of<SplashProvider>(context, listen: false)
-                        .configModel
-                        .deliveryManagement
-                        .status ==
-                    1;
 
             return cart.cartList.length > 0
                 ? Column(
@@ -368,8 +390,17 @@ class _CartScreenState extends State<CartScreen> {
                                                       SizedBox(
                                                           height: Dimensions
                                                               .PADDING_SIZE_LARGE),
-
                                                       // Total
+                                                      // _loading
+                                                      //     ? Center(
+                                                      //         child:
+                                                      //             CircularProgressIndicator(
+                                                      //         valueColor: AlwaysStoppedAnimation<
+                                                      //             Color>(Theme.of(
+                                                      //                 context)
+                                                      //             .primaryColor),
+                                                      //       ))
+                                                      //     : SizedBox(),
                                                       Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -476,9 +507,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           children: [
                                                             Text(
                                                                 getTranslated(
-                                                                    _kmWiseCharge
-                                                                        ? 'subtotal'
-                                                                        : 'total_amount',
+                                                                    'total_amount',
                                                                     context),
                                                                 style: rubikMedium
                                                                     .copyWith(
@@ -515,24 +544,26 @@ class _CartScreenState extends State<CartScreen> {
                                                           padding: EdgeInsets
                                                               .all(Dimensions
                                                                   .PADDING_SIZE_SMALL),
-                                                          child: CustomButton(
-                                                              btnTxt: getTranslated(
-                                                                  'continue_checkout',
-                                                                  context),
-                                                              onTap: () {
-                                                                Navigator
-                                                                    .pushNamed(
-                                                                        context,
-                                                                        Routes
-                                                                            .getCheckoutRoute(
-                                                                          _total,
-                                                                          'cart',
-                                                                          Provider.of<OrderProvider>(context, listen: false)
-                                                                              .orderType,
-                                                                          Provider.of<CouponProvider>(context, listen: false)
-                                                                              .code,
-                                                                        ));
-                                                              }),
+                                                          child: !order
+                                                                  .isLoading
+                                                              ? CustomButton(
+                                                                  btnTxt: getTranslated(
+                                                                      'confirm_booking',
+                                                                      context),
+                                                                  onTap: () {
+                                                                    processOrder(
+                                                                        order,
+                                                                        _total,
+                                                                        context);
+                                                                  })
+                                                              : Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                  valueColor: new AlwaysStoppedAnimation<
+                                                                      Color>(Theme.of(
+                                                                          context)
+                                                                      .primaryColor),
+                                                                )),
                                                         ),
                                                     ]),
                                               ),
@@ -555,33 +586,28 @@ class _CartScreenState extends State<CartScreen> {
                           width: 1170,
                           padding:
                               EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                          child: CustomButton(
-                              btnTxt:
-                                  getTranslated('continue_checkout', context),
-                              onTap: () {
-                                if (_orderAmount <
-                                    Provider.of<SplashProvider>(context,
-                                            listen: false)
-                                        .configModel
-                                        .minimumOrderValue) {
-                                  showCustomSnackBar(
-                                      'Minimum order amount is ${PriceConverter.convertPrice(context, Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue)}, you have ${PriceConverter.convertPrice(context, _orderAmount)} in your cart, please add more item.',
-                                      context);
-                                } else {
-                                  Navigator.pushNamed(
-                                      context,
-                                      Routes.getCheckoutRoute(
-                                        _total,
-                                        'cart',
-                                        Provider.of<OrderProvider>(context,
+                          child: !order.isLoading
+                              ? CustomButton(
+                                  btnTxt:
+                                      getTranslated('confirm_booking', context),
+                                  onTap: () {
+                                    if (_orderAmount <
+                                        Provider.of<SplashProvider>(context,
                                                 listen: false)
-                                            .orderType,
-                                        Provider.of<CouponProvider>(context,
-                                                listen: false)
-                                            .code,
-                                      ));
-                                }
-                              }),
+                                            .configModel
+                                            .minimumOrderValue) {
+                                      showCustomSnackBar(
+                                          'Minimum order amount is ${PriceConverter.convertPrice(context, Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue)}, you have ${PriceConverter.convertPrice(context, _orderAmount)} in your cart, please add more item.',
+                                          context);
+                                    } else {
+                                      processOrder(order, _total, context);
+                                    }
+                                  })
+                              : Center(
+                                  child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                      Theme.of(context).primaryColor),
+                                )),
                         ),
                     ],
                   )
@@ -590,6 +616,116 @@ class _CartScreenState extends State<CartScreen> {
         );
       }),
     );
+  }
+
+  void processOrder(OrderProvider order, double _total, BuildContext context) {
+    bool _isAvailable = true;
+    Map<String, dynamic> _tabledata =
+        Provider.of<BookTableProvider>(context, listen: false)
+            .getTableBookData();
+    DateTime _scheduleStartDate = DateTime.now();
+    DateTime _scheduleEndDate = DateTime.now();
+    if (order.timeSlots == null || order.timeSlots.length == 0) {
+      _isAvailable = false;
+    } else {
+      DateTime _date = order.selectDateSlot == 0
+          ? DateTime.now()
+          : DateTime.now().add(Duration(days: 1));
+      DateTime _startTime = order.timeSlots[order.selectTimeSlot].startTime;
+      DateTime _endTime = order.timeSlots[order.selectTimeSlot].endTime;
+      _scheduleStartDate = DateTime(_date.year, _date.month, _date.day,
+          _startTime.hour, _startTime.minute + 1);
+      _scheduleEndDate = DateTime(_date.year, _date.month, _date.day,
+          _endTime.hour, _endTime.minute + 1);
+      _cartList = [];
+      _cartList
+          .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
+      for (CartModel cart in _cartList) {
+        if (!DateConverter.isAvailable(
+              cart.product.availableTimeStarts,
+              cart.product.availableTimeEnds,
+              context,
+              time: _scheduleStartDate ?? null,
+            ) &&
+            !DateConverter.isAvailable(cart.product.availableTimeStarts,
+                cart.product.availableTimeEnds, context,
+                time: _scheduleEndDate ?? null)) {
+          _isAvailable = false;
+          break;
+        }
+      }
+    }
+    if (_total <
+        Provider.of<SplashProvider>(context, listen: false)
+            .configModel
+            .minimumOrderValue) {
+      showCustomSnackBar(
+          'Minimum order amount is ${Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue}',
+          context);
+    } else if (order.timeSlots == null || order.timeSlots.length == 0) {
+      showCustomSnackBar(getTranslated('select_a_time', context), context);
+    } else if (!_isAvailable) {
+      showCustomSnackBar(
+          getTranslated(
+              'one_or_more_products_are_not_available_for_this_selected_time',
+              context),
+          context);
+    } else {
+      List<Cart> carts = [];
+      for (int index = 0; index < _cartList.length; index++) {
+        CartModel cart = _cartList[index];
+        List<int> _addOnIdList = [];
+        List<int> _addOnQtyList = [];
+        cart.addOnIds.forEach((addOn) {
+          _addOnIdList.add(addOn.id);
+          _addOnQtyList.add(addOn.quantity);
+        });
+        carts.add(Cart(
+          cart.product.id.toString(),
+          cart.discountedPrice.toString(),
+          '',
+          cart.variation,
+          cart.discountAmount,
+          cart.quantity,
+          cart.taxAmount,
+          _addOnIdList,
+          _addOnQtyList,
+        ));
+      }
+      PlaceOrderBody _placeOrderBody = PlaceOrderBody(
+        cart: carts,
+        couponDiscountAmount:
+            Provider.of<CouponProvider>(context, listen: false).discount,
+        couponDiscountTitle:
+            _couponController.text.isNotEmpty ? _couponController.text : null,
+        deliveryAddressId: 0,
+        orderAmount: _total,
+        orderNote: '',
+        orderType: 'buffet',
+        paymentMethod: 'cash_on_delivery',
+        couponCode: _couponController.text.toString().isNotEmpty
+            ? _couponController.text.toString()
+            : null,
+        distance: 0,
+        branchId: _branches[order.branchIndex].id,
+        deliveryDate: _tabledata['date'],
+        deliveryTime: _tabledata['time'],
+      );
+      order.placeOrder(_placeOrderBody, _callback);
+    }
+  }
+
+  void _callback(
+      bool isSuccess, String message, String orderID, int addressID) async {
+    if (isSuccess) {
+      Provider.of<CartProvider>(context, listen: false).clearCartList();
+      Provider.of<OrderProvider>(context, listen: false).stopLoader();
+
+      Navigator.pushReplacementNamed(
+          context, '${Routes.ORDER_SUCCESS_SCREEN}/$orderID/success');
+    } else {
+      showCustomSnackBar(message, context);
+    }
   }
 }
 

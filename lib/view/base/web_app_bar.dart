@@ -466,9 +466,7 @@ class _WebAppBarState extends State<WebAppBar> {
                                     child: Center(
                                       child: Text(
                                         Provider.of<CartProvider>(context)
-                                            .cartList
-                                            .length
-                                            .toString(),
+                                            .getCartLength(type: 'normal'),
                                         style: rubikMedium.copyWith(
                                             color: ColorResources.COLOR_WHITE,
                                             fontSize: 8),

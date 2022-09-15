@@ -13,7 +13,7 @@ class BuffetMenuProvider extends ChangeNotifier {
 
   List<Product> get setBuffetList => _setBuffetList;
 
-  Future<void> getSetMenuList(
+  Future<void> getBuffetMenuList(
       BuildContext context, bool reload, String languageCode) async {
     if (setBuffetList == null || reload) {
       ApiResponse apiResponse =

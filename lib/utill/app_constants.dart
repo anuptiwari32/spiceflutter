@@ -4,8 +4,9 @@ import 'package:flutter_restaurant/utill/images.dart';
 class AppConstants {
   static const String APP_NAME = 'Spice Heaven';
   static const double APP_VERSION = 8.0;
-  static const String BASE_URL = 'https://efood-admin.6amtech.com';
-  //   'http://ec2-43-205-38-127.ap-south-1.compute.amazonaws.com/backend'; // 'https://efood-admin.6amtech.com';
+  //static const String BASE_URL = 'https://efood-admin.6amtech.com';
+  static const String BASE_URL =
+      'http://ec2-43-205-38-127.ap-south-1.compute.amazonaws.com/backend'; // 'https://efood-admin.6amtech.com';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String LATEST_PRODUCT_URI = '/api/v1/products/latest';
@@ -28,6 +29,10 @@ class AppConstants {
   static const String LOGIN_URI = '/api/v1/auth/login';
   static const String TOKEN_URI = '/api/v1/customer/cm-firebase-token';
   static const String PLACE_ORDER_URI = '/api/v1/customer/order/place';
+  static const String BOOK_TABLE_URI = '/api/v1/customer/book/place';
+  static const String BOOK_SLOTS_URI = '/api/v1/book/check-availability';
+  static const String CHECK_SLOTS_URI = '/api/v1/book/check-slots';
+
   static const String ADDRESS_LIST_URI = '/api/v1/customer/address/list';
   static const String REMOVE_ADDRESS_URI =
       '/api/v1/customer/address/delete?address_id=';
@@ -88,18 +93,40 @@ class AppConstants {
   static const String TOPIC = 'notify';
   static const String ON_BOARDING_SKIP = 'on_boarding_skip';
   static const String PLACE_ORDER_DATA = 'place_order_data';
+  static const String BOOK_TABLE_DATA = 'place_order_data';
 
   static const String DATE_FORMAT = 'yyyy-MM-dd';
+  static const List<String> SLOTS = <String>[
+    '12:00 AM',
+    '01:00 AM',
+    '02:00 AM',
+    '03:00 AM',
+    '04:00 AM',
+    '05:00 AM',
+    '06:00 AM',
+    '07:00 AM',
+    '08:00 AM',
+    '09:00 AM',
+    '10:00 AM',
+    '11:00 AM',
+    '12:00 PM',
+    '01:00 PM',
+    '02:00 PM',
+    '03:00 PM',
+    '04:00 PM',
+    '05:00 PM',
+    '06:00 PM',
+    '07:00 PM',
+    '08:00 PM',
+    '09:00 PM',
+    '10:00 PM',
+    '11:00 PM',
+  ];
   static List<LanguageModel> languages = [
     LanguageModel(
         imageUrl: Images.united_kindom,
         languageName: 'English',
         countryCode: 'US',
-        languageCode: 'en'),
-    LanguageModel(
-        imageUrl: Images.arabic,
-        languageName: 'Arabic',
-        countryCode: 'SA',
-        languageCode: 'ar'),
+        languageCode: 'en')
   ];
 }

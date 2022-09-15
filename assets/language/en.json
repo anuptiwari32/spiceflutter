@@ -274,6 +274,7 @@
   "not_found": "Not found",
   "delivery_fee_not_set_yet": "Delivery fee not set yet",
   "continue_checkout": "Continue Checkout",
+  "confirm_booking": "Confirm Booking",
   "failed_to_fetch_distance": "Failed to fetch distance",
   "delivery_fee_from_your_selected_address_to_branch": "Delivery fee from your selected address to branch",
   "version007": "version007",

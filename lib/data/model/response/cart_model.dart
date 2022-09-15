@@ -9,16 +9,18 @@ class CartModel {
   double _taxAmount;
   List<AddOn> _addOnIds;
   Product _product;
+  String _type;
 
   CartModel(
-        double price,
-        double discountedPrice,
-        List<Variation> variation,
-        double discountAmount,
-        int quantity,
-        double taxAmount,
-        List<AddOn> addOnIds,
-        Product product) {
+    double price,
+    double discountedPrice,
+    List<Variation> variation,
+    double discountAmount,
+    int quantity,
+    double taxAmount,
+    List<AddOn> addOnIds,
+    Product product,
+  ) {
     this._price = price;
     this._discountedPrice = discountedPrice;
     this._variation = variation;
@@ -27,6 +29,7 @@ class CartModel {
     this._taxAmount = taxAmount;
     this._addOnIds = addOnIds;
     this._product = product;
+    this._type = product.setMenu == 2 ? 'buffet' : 'normal';
   }
 
   double get price => _price;
@@ -40,6 +43,7 @@ class CartModel {
   double get taxAmount => _taxAmount;
   List<AddOn> get addOnIds => _addOnIds;
   Product get product => _product;
+  String get type => _type;
 
   CartModel.fromJson(Map<String, dynamic> json) {
     _price = json['price'].toDouble();
