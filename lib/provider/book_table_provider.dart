@@ -63,7 +63,7 @@ class BookTableProvider extends ChangeNotifier {
   int get selectTimeSlot => _selectTimeSlot;
   double get distance => _distance;
 
-  Future<void> getSlots(String branchId, String date, String session,
+  Future<List<String>> getSlots(String branchId, String date, String session,
       BuildContext context) async {
     ApiResponse apiResponse =
         await tableRepo.checkSlots(branchId, date, session);
@@ -74,6 +74,7 @@ class BookTableProvider extends ChangeNotifier {
       ApiChecker.checkApi(context, apiResponse);
     }
     notifyListeners();
+    return _slots;
   }
 
   Future<void> checkAvailability(String branchId, String date, String session,

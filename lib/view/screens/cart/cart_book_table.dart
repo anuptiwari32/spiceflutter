@@ -24,6 +24,7 @@ import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_divider.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
+import 'package:flutter_restaurant/view/base/custom_text_field.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/cart_product_widget.dart';
@@ -38,6 +39,7 @@ class CartBookTable extends StatefulWidget {
 
 class _CartBookTableState extends State<CartBookTable> {
   final TextEditingController _couponController = TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
   List<Branches> _branches = [];
   bool _isLoggedIn;
   List<CartModel> _cartList;
@@ -60,13 +62,13 @@ class _CartBookTableState extends State<CartBookTable> {
         Provider.of<ProfileProvider>(context, listen: false)
             .getUserInfo(context);
       }
-      Provider.of<BookTableProvider>(context, listen: false)
-          .addItemsToCart(context)
-          .then((value) {
-        _cartList = [];
-        _cartList
-            .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
-      });
+      // Provider.of<BookTableProvider>(context, listen: false)
+      //     .addItemsToCart(context)
+      //     .then((value) {
+      //   _cartList = [];
+      //   _cartList
+      //       .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
+      // });
     }
 
     Provider.of<BuffetMenuProvider>(context, listen: false)
@@ -112,6 +114,7 @@ class _CartBookTableState extends State<CartBookTable> {
             double _tax = 0;
             double _addOns = 0;
             cart.cartList.forEach((cartModel) {
+              //add on list is not needed here
               List<AddOns> _addOnList = [];
               cartModel.addOnIds.forEach((addOnId) {
                 for (AddOns addOns in cartModel.product.addOns) {
@@ -123,10 +126,8 @@ class _CartBookTableState extends State<CartBookTable> {
               });
               _addOnsList.add(_addOnList);
 
-              _availableList.add(DateConverter.isAvailable(
-                  cartModel.product.availableTimeStarts,
-                  cartModel.product.availableTimeEnds,
-                  context));
+              _availableList
+                  .add(true); //keep it true for all the buffet products
 
               for (int index = 0; index < _addOnList.length; index++) {
                 _addOns = _addOns +
@@ -390,17 +391,7 @@ class _CartBookTableState extends State<CartBookTable> {
                                                       SizedBox(
                                                           height: Dimensions
                                                               .PADDING_SIZE_LARGE),
-                                                      // Total
-                                                      // _loading
-                                                      //     ? Center(
-                                                      //         child:
-                                                      //             CircularProgressIndicator(
-                                                      //         valueColor: AlwaysStoppedAnimation<
-                                                      //             Color>(Theme.of(
-                                                      //                 context)
-                                                      //             .primaryColor),
-                                                      //       ))
-                                                      //     : SizedBox(),
+
                                                       Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -537,6 +528,29 @@ class _CartBookTableState extends State<CartBookTable> {
                                                         SizedBox(
                                                             height: Dimensions
                                                                 .PADDING_SIZE_DEFAULT),
+                                                      Padding(
+                                                        padding: EdgeInsets.all(
+                                                            Dimensions
+                                                                .PADDING_SIZE_SMALL),
+                                                        child: CustomTextField(
+                                                          controller:
+                                                              _noteController,
+                                                          hintText: getTranslated(
+                                                              'additional_note',
+                                                              context),
+                                                          maxLines: 5,
+                                                          inputType:
+                                                              TextInputType
+                                                                  .multiline,
+                                                          inputAction:
+                                                              TextInputAction
+                                                                  .newline,
+                                                          capitalization:
+                                                              TextCapitalization
+                                                                  .sentences,
+                                                        ),
+                                                      ),
+
                                                       if (ResponsiveHelper
                                                           .isDesktop(context))
                                                         Container(
@@ -623,38 +637,38 @@ class _CartBookTableState extends State<CartBookTable> {
     Map<String, dynamic> _tabledata =
         Provider.of<BookTableProvider>(context, listen: false)
             .getTableBookData();
-    DateTime _scheduleStartDate = DateTime.now();
-    DateTime _scheduleEndDate = DateTime.now();
-    if (order.timeSlots == null || order.timeSlots.length == 0) {
-      _isAvailable = false;
-    } else {
-      DateTime _date = order.selectDateSlot == 0
-          ? DateTime.now()
-          : DateTime.now().add(Duration(days: 1));
-      DateTime _startTime = order.timeSlots[order.selectTimeSlot].startTime;
-      DateTime _endTime = order.timeSlots[order.selectTimeSlot].endTime;
-      _scheduleStartDate = DateTime(_date.year, _date.month, _date.day,
-          _startTime.hour, _startTime.minute + 1);
-      _scheduleEndDate = DateTime(_date.year, _date.month, _date.day,
-          _endTime.hour, _endTime.minute + 1);
-      _cartList = [];
-      _cartList
-          .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
-      for (CartModel cart in _cartList) {
-        if (!DateConverter.isAvailable(
-              cart.product.availableTimeStarts,
-              cart.product.availableTimeEnds,
-              context,
-              time: _scheduleStartDate ?? null,
-            ) &&
-            !DateConverter.isAvailable(cart.product.availableTimeStarts,
-                cart.product.availableTimeEnds, context,
-                time: _scheduleEndDate ?? null)) {
-          _isAvailable = false;
-          break;
-        }
-      }
-    }
+    // DateTime _scheduleStartDate = DateTime.now();
+    // DateTime _scheduleEndDate = DateTime.now();
+    // if (order.timeSlots == null || order.timeSlots.length == 0) {
+    //   _isAvailable = false;
+    // } else {
+    //   DateTime _date = order.selectDateSlot == 0
+    //       ? DateTime.now()
+    //       : DateTime.now().add(Duration(days: 1));
+    //   DateTime _startTime = order.timeSlots[order.selectTimeSlot].startTime;
+    //   DateTime _endTime = order.timeSlots[order.selectTimeSlot].endTime;
+    //   _scheduleStartDate = DateTime(_date.year, _date.month, _date.day,
+    //       _startTime.hour, _startTime.minute + 1);
+    //   _scheduleEndDate = DateTime(_date.year, _date.month, _date.day,
+    //       _endTime.hour, _endTime.minute + 1);
+    //   _cartList = [];
+    //   _cartList
+    //       .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
+    //   for (CartModel cart in _cartList) {
+    //     if (!DateConverter.isAvailable(
+    //           cart.product.availableTimeStarts,
+    //           cart.product.availableTimeEnds,
+    //           context,
+    //           time: _scheduleStartDate ?? null,
+    //         ) &&
+    //         !DateConverter.isAvailable(cart.product.availableTimeStarts,
+    //             cart.product.availableTimeEnds, context,
+    //             time: _scheduleEndDate ?? null)) {
+    //       _isAvailable = false;
+    //       break;
+    //     }
+    //   }
+    // }
     if (_total <
         Provider.of<SplashProvider>(context, listen: false)
             .configModel
@@ -700,7 +714,7 @@ class _CartBookTableState extends State<CartBookTable> {
             _couponController.text.isNotEmpty ? _couponController.text : null,
         deliveryAddressId: 0,
         orderAmount: _total,
-        orderNote: '',
+        orderNote: _noteController.text ?? '',
         orderType: 'buffet',
         paymentMethod: 'cash_on_delivery',
         couponCode: _couponController.text.toString().isNotEmpty
@@ -722,7 +736,7 @@ class _CartBookTableState extends State<CartBookTable> {
       Provider.of<OrderProvider>(context, listen: false).stopLoader();
 
       Navigator.pushReplacementNamed(
-          context, '${Routes.ORDER_SUCCESS_SCREEN}/$orderID/success');
+          context, '${Routes.ORDER_SUCCESS_SCREEN}/$orderID/booking-success');
     } else {
       showCustomSnackBar(message, context);
     }

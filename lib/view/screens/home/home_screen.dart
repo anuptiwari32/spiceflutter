@@ -4,7 +4,6 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/banner_provider.dart';
-import 'package:flutter_restaurant/provider/book_table_provider.dart';
 import 'package:flutter_restaurant/provider/buffet_menu_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
@@ -31,6 +30,7 @@ import 'package:flutter_restaurant/view/screens/home/widget/category_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/set_menu_view.dart';
+import 'package:flutter_restaurant/view/screens/home/widget/table_book_card.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
 import 'package:provider/provider.dart';
 
@@ -390,7 +390,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     top: Dimensions.PADDING_SIZE_DEFAULT),
                                 child: BookTableScreen(),
                               )
-                            : SizedBox(),
+                            : SizedBox(height: 530, child: TableBookCard()),
                         ResponsiveHelper.isDesktop(context)
                             ? CategoryViewWeb()
                             : CategoryView(),
@@ -398,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? SetMenuViewWeb()
                             : SetMenuView(),
                         ResponsiveHelper.isDesktop(context)
-                            ? SizedBox()
+                            ? MainSlider()
                             : BannerView(),
                         ResponsiveHelper.isDesktop(context)
                             ? Row(

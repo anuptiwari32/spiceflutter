@@ -2,6 +2,8 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/config_model.dart';
+import 'package:flutter_restaurant/helper/date_converter.dart';
+import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/book_table_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_html/html.dart';
 
 class TableBookCard extends StatefulWidget {
   @override
@@ -68,6 +71,9 @@ class _TableBookCard extends State<TableBookCard> {
             context)
         .then((value) {
       setState(() {
+        slots = DateConverter.getSlots(value, context,
+            end: datepicker.text.toString());
+        slots = DateConverter.getSlots(value, context);
         slot = _tableData.isNotEmpty ? _tableData['time'] : '';
       });
     });
@@ -78,7 +84,7 @@ class _TableBookCard extends State<TableBookCard> {
     return Consumer<BookTableProvider>(builder: (context, order, child) {
       return Stack(children: <Widget>[
         Container(
-            width: 380,
+            width: ResponsiveHelper.isDesktop(context) ? 380 : 1170,
             height: 450,
             padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
             decoration: BoxDecoration(
@@ -413,7 +419,9 @@ class _TableBookCard extends State<TableBookCard> {
             ])),
         Positioned(
           bottom: 0,
-          left: 120.0,
+          left: ResponsiveHelper.isDesktop(context)
+              ? 120.0
+              : MediaQuery.of(context).size.width / 2 - 70,
           child: InkWell(
               onTap: () {
                 Map<String, dynamic> data = Map<String, dynamic>();
@@ -482,7 +490,8 @@ class _TableBookCard extends State<TableBookCard> {
           : DateFormat(AppConstants.DATE_FORMAT).format(DateTime.now());
 
       order.getSlots(branchId, dateSelected, eatingTime, context).then((value) {
-        slots = order.slots;
+        slots = DateConverter.getSlots(value, context, end: dateSelected);
+
         slot = '';
       });
       changeType(type);

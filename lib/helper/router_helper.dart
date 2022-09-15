@@ -215,7 +215,9 @@ class RouterHelper {
         ? 0
         : params['status'][0] == 'fail'
             ? 1
-            : 2;
+            : params['status'][0] == 'booking-success'
+                ? 2
+                : 3;
     return OrderSuccessfulScreen(orderID: params['id'][0], status: _status);
   });
 
