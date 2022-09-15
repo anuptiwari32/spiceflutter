@@ -175,6 +175,8 @@
   "are_you_sure_to_cancel": "Are you sure you want to cancel this order?",
   "want_to_sign_out": "Are you sure you want to sign out?",
   "address": "Address",
+  "booking_date": "Booking Date",
+  "booking_time": "Booking Time",
   "already_added_in_cart": "Already added in cart",
   "payment_failed": "Payment Failed",
   "payment_process_is_interrupted": "Payment process is interrupted. Please complete the order payment from order details page.",

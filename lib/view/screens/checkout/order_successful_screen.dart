@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/book_table_provider.dart';
+import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
@@ -19,8 +21,15 @@ class OrderSuccessfulScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
-    if (status == 2)
+    List<Branches> _branches =
+        Provider.of<SplashProvider>(context, listen: false)
+            .configModel
+            .branches;
+    Map<String, dynamic> _tableData;
+    if (status == 2) {
+      _tableData = Provider.of<BookTableProvider>(context).getTableBookData();
       Provider.of<BookTableProvider>(context).clearTableBookData();
+    }
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context)
           ? PreferredSize(
@@ -113,6 +122,79 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                                   fontSize: Dimensions
                                                       .FONT_SIZE_SMALL)),
                                         ]),
+                                  _tableData.isNotEmpty
+                                      ? SizedBox(height: 10)
+                                      : null,
+                                  _tableData.isNotEmpty
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                              Text(
+                                                  '${getTranslated('booking_date', context)}:',
+                                                  style: rubikRegular.copyWith(
+                                                      fontSize: Dimensions
+                                                          .FONT_SIZE_SMALL)),
+                                              SizedBox(
+                                                  width: Dimensions
+                                                      .PADDING_SIZE_EXTRA_SMALL),
+                                              Text(_tableData['date'],
+                                                  style: rubikMedium.copyWith(
+                                                      fontSize: Dimensions
+                                                          .FONT_SIZE_SMALL)),
+                                            ])
+                                      : null,
+                                  _tableData.isNotEmpty
+                                      ? SizedBox(height: 10)
+                                      : null,
+                                  _tableData.isNotEmpty
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                              Text(
+                                                  '${getTranslated('booking_time', context)}:',
+                                                  style: rubikRegular.copyWith(
+                                                      fontSize: Dimensions
+                                                          .FONT_SIZE_SMALL)),
+                                              SizedBox(
+                                                  width: Dimensions
+                                                      .PADDING_SIZE_EXTRA_SMALL),
+                                              Text(_tableData['time'],
+                                                  style: rubikMedium.copyWith(
+                                                      fontSize: Dimensions
+                                                          .FONT_SIZE_SMALL)),
+                                            ])
+                                      : null,
+                                  _tableData.isNotEmpty
+                                      ? SizedBox(height: 10)
+                                      : null,
+                                  _tableData.isNotEmpty
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                              Text(
+                                                  '${getTranslated('address', context)}:',
+                                                  style: rubikRegular.copyWith(
+                                                      fontSize: Dimensions
+                                                          .FONT_SIZE_SMALL)),
+                                              SizedBox(
+                                                  width: Dimensions
+                                                      .PADDING_SIZE_EXTRA_SMALL),
+                                              Text(
+                                                  _branches
+                                                      .where((element) =>
+                                                          element.id ==
+                                                          _tableData[
+                                                              'branch_id'])
+                                                      .first
+                                                      .address,
+                                                  style: rubikMedium.copyWith(
+                                                      fontSize: Dimensions
+                                                          .FONT_SIZE_SMALL)),
+                                            ])
+                                      : null,
                                   SizedBox(height: 30),
                                   Container(
                                     width: ResponsiveHelper.isDesktop(context)
@@ -206,6 +288,69 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                             fontSize:
                                                 Dimensions.FONT_SIZE_SMALL)),
                                   ]),
+                            _tableData.isNotEmpty ? SizedBox(height: 10) : null,
+                            _tableData.isNotEmpty
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        Text(
+                                            '${getTranslated('booking_date', context)}:',
+                                            style: rubikRegular.copyWith(
+                                                fontSize: Dimensions
+                                                    .FONT_SIZE_SMALL)),
+                                        SizedBox(
+                                            width: Dimensions
+                                                .PADDING_SIZE_EXTRA_SMALL),
+                                        Text(_tableData['date'],
+                                            style: rubikMedium.copyWith(
+                                                fontSize: Dimensions
+                                                    .FONT_SIZE_SMALL)),
+                                      ])
+                                : null,
+                            _tableData.isNotEmpty ? SizedBox(height: 10) : null,
+                            _tableData.isNotEmpty
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        Text(
+                                            '${getTranslated('booking_time', context)}:',
+                                            style: rubikRegular.copyWith(
+                                                fontSize: Dimensions
+                                                    .FONT_SIZE_SMALL)),
+                                        SizedBox(
+                                            width: Dimensions
+                                                .PADDING_SIZE_EXTRA_SMALL),
+                                        Text(_tableData['time'],
+                                            style: rubikMedium.copyWith(
+                                                fontSize: Dimensions
+                                                    .FONT_SIZE_SMALL)),
+                                      ])
+                                : null,
+                            _tableData.isNotEmpty ? SizedBox(height: 10) : null,
+                            _tableData.isNotEmpty
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        Text(
+                                            '${getTranslated('address', context)}:',
+                                            style: rubikRegular.copyWith(
+                                                fontSize: Dimensions
+                                                    .FONT_SIZE_SMALL)),
+                                        SizedBox(
+                                            width: Dimensions
+                                                .PADDING_SIZE_EXTRA_SMALL),
+                                        Text(
+                                            _branches
+                                                .where((element) =>
+                                                    element.id ==
+                                                    _tableData['branch_id'])
+                                                .first
+                                                .address,
+                                            style: rubikMedium.copyWith(
+                                                fontSize: Dimensions
+                                                    .FONT_SIZE_SMALL)),
+                                      ])
+                                : null,
                             SizedBox(height: 30),
                             Container(
                               width: ResponsiveHelper.isDesktop(context)

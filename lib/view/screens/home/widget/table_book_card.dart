@@ -301,12 +301,12 @@ class _TableBookCard extends State<TableBookCard> {
                                   print(
                                       formattedDate); //formatted date output using intl package =>  2021-03-16
                                   //you can implement different kind of Date Format here according to your requirement
-                                  changeBackground('date', context, order);
 
                                   setState(() {
                                     datepicker.text =
                                         formattedDate; //set output date to TextField value.
                                   });
+                                  changeBackground('date', context, order);
                                 } else {
                                   print("Date is not selected");
                                 }
@@ -491,9 +491,15 @@ class _TableBookCard extends State<TableBookCard> {
 
       order.getSlots(branchId, dateSelected, eatingTime, context).then((value) {
         slots = DateConverter.getSlots(value, context, end: dateSelected);
-
         slot = '';
       });
+      if (dateSelected ==
+          DateFormat(AppConstants.DATE_FORMAT).format(DateTime.now()))
+        type = 'today';
+      else if (DateFormat(AppConstants.DATE_FORMAT)
+              .format(DateTime.now().add(const Duration(days: 1))) ==
+          dateSelected) type = 'tommorrow';
+
       changeType(type);
     });
   }
@@ -520,8 +526,6 @@ class _TableBookCard extends State<TableBookCard> {
           tommorrowBackground = Colors.transparent;
           String formattedDate =
               DateFormat(AppConstants.DATE_FORMAT).format(DateTime.now());
-          //formatted date output using intl package =>  2021-03-16
-          //you can implement different kind of Date Format here according to your requirement
           datepicker.text = formattedDate; //set output date to TextField value
           break;
         }
@@ -530,12 +534,23 @@ class _TableBookCard extends State<TableBookCard> {
           tommorrowBackground = Colors.red;
           todayBackground = Colors.transparent;
           var today = DateTime.now();
-
           String formattedDate = DateFormat(AppConstants.DATE_FORMAT)
               .format(today.add(const Duration(days: 1)));
-          //formatted date output using intl package =>  2021-03-16 //you can implement different kind of Date Format here according to your requirement
           datepicker.text = formattedDate;
-
+          break;
+        }
+      case 'date':
+        {
+          tommorrowBackground = Colors.transparent;
+          todayBackground = Colors.transparent;
+          break;
+        }
+      default:
+        {
+          tommorrowBackground = Colors.transparent;
+          todayBackground = Colors.transparent;
+          lunchColor = Colors.transparent;
+          dinnerColor = Colors.transparent;
           break;
         }
     }

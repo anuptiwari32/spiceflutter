@@ -721,7 +721,9 @@ class _CartBookTableState extends State<CartBookTable> {
             ? _couponController.text.toString()
             : null,
         distance: 0,
-        branchId: _branches[order.branchIndex].id,
+        branchId: _tabledata.isNotEmpty
+            ? _tabledata['branch_id']
+            : _branches[order.branchIndex].id,
         deliveryDate: _tabledata['date'],
         deliveryTime: _tabledata['time'],
       );
