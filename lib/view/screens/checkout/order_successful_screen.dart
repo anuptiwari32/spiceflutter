@@ -25,7 +25,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
         Provider.of<SplashProvider>(context, listen: false)
             .configModel
             .branches;
-    Map<String, dynamic> _tableData;
+    Map<String, dynamic> _tableData = new Map<String, dynamic>();
     if (status == 2) {
       _tableData = Provider.of<BookTableProvider>(context).getTableBookData();
       Provider.of<BookTableProvider>(context).clearTableBookData();
@@ -124,7 +124,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                         ]),
                                   _tableData.isNotEmpty
                                       ? SizedBox(height: 10)
-                                      : null,
+                                      : SizedBox(),
                                   _tableData.isNotEmpty
                                       ? Row(
                                           mainAxisAlignment:
@@ -143,10 +143,10 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                                       fontSize: Dimensions
                                                           .FONT_SIZE_SMALL)),
                                             ])
-                                      : null,
+                                      : SizedBox(),
                                   _tableData.isNotEmpty
                                       ? SizedBox(height: 10)
-                                      : null,
+                                      : SizedBox(),
                                   _tableData.isNotEmpty
                                       ? Row(
                                           mainAxisAlignment:
@@ -165,10 +165,10 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                                       fontSize: Dimensions
                                                           .FONT_SIZE_SMALL)),
                                             ])
-                                      : null,
+                                      : SizedBox(),
                                   _tableData.isNotEmpty
                                       ? SizedBox(height: 10)
-                                      : null,
+                                      : SizedBox(),
                                   _tableData.isNotEmpty
                                       ? Row(
                                           mainAxisAlignment:
@@ -194,7 +194,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                                       fontSize: Dimensions
                                                           .FONT_SIZE_SMALL)),
                                             ])
-                                      : null,
+                                      : SizedBox(),
                                   SizedBox(height: 30),
                                   Container(
                                     width: ResponsiveHelper.isDesktop(context)
@@ -288,7 +288,9 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                             fontSize:
                                                 Dimensions.FONT_SIZE_SMALL)),
                                   ]),
-                            _tableData.isNotEmpty ? SizedBox(height: 10) : null,
+                            _tableData.isNotEmpty
+                                ? SizedBox(height: 10)
+                                : SizedBox(),
                             _tableData.isNotEmpty
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -306,8 +308,10 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                                 fontSize: Dimensions
                                                     .FONT_SIZE_SMALL)),
                                       ])
-                                : null,
-                            _tableData.isNotEmpty ? SizedBox(height: 10) : null,
+                                : SizedBox(),
+                            _tableData.isNotEmpty
+                                ? SizedBox(height: 10)
+                                : SizedBox(),
                             _tableData.isNotEmpty
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -325,8 +329,10 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                                 fontSize: Dimensions
                                                     .FONT_SIZE_SMALL)),
                                       ])
-                                : null,
-                            _tableData.isNotEmpty ? SizedBox(height: 10) : null,
+                                : SizedBox(),
+                            _tableData.isNotEmpty
+                                ? SizedBox(height: 10)
+                                : SizedBox(),
                             _tableData.isNotEmpty
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -350,7 +356,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                                 fontSize: Dimensions
                                                     .FONT_SIZE_SMALL)),
                                       ])
-                                : null,
+                                : SizedBox(),
                             SizedBox(height: 30),
                             Container(
                               width: ResponsiveHelper.isDesktop(context)

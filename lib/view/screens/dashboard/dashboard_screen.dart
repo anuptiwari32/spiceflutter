@@ -118,10 +118,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red),
                     child: Text(
-                      Provider.of<CartProvider>(context)
-                          .cartList
-                          .length
-                          .toString(),
+                      Provider.of<CartProvider>(context).getCartLength(),
                       style: rubikMedium.copyWith(
                           color: ColorResources.COLOR_WHITE, fontSize: 8),
                     ),
