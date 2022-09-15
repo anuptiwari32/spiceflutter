@@ -69,7 +69,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
-                                      status == 0
+                                      status == 0 || status == 2
                                           ? Icons.check_circle
                                           : status == 1
                                               ? Icons.sms_failed
@@ -165,7 +165,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
-                                status == 0
+                                status == 0 || status == 2
                                     ? Icons.check_circle
                                     : status == 1
                                         ? Icons.sms_failed
@@ -179,15 +179,17 @@ class OrderSuccessfulScreen extends StatelessWidget {
                               getTranslated(
                                   status == 0
                                       ? 'order_placed_successfully'
-                                      : status == 1
-                                          ? 'payment_failed'
-                                          : 'payment_cancelled',
+                                      : status == 2
+                                          ? 'booking_confirmed_successfully'
+                                          : status == 1
+                                              ? 'payment_failed'
+                                              : 'payment_cancelled',
                                   context),
                               style: rubikMedium.copyWith(
                                   fontSize: Dimensions.FONT_SIZE_LARGE),
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                            if (status == 0)
+                            if (status == 0 || status == 2)
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
