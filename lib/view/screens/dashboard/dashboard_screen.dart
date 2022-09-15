@@ -33,7 +33,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     Provider.of<OrderProvider>(context, listen: false).changeStatus(true);
     _pageIndex = widget.pageIndex;
-
     _pageController = PageController(initialPage: widget.pageIndex);
 
     _screens = [
@@ -70,7 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 selectedItemColor: Theme.of(context).primaryColor,
                 unselectedItemColor: ColorResources.COLOR_GREY,
                 showUnselectedLabels: true,
-                currentIndex: _pageIndex,
+                currentIndex: _pageIndex != 5 ? _pageIndex : 0,
                 type: BottomNavigationBarType.fixed,
                 items: [
                   _barItem(Icons.home, getTranslated('home', context), 0),

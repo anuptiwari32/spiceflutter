@@ -5,7 +5,6 @@ import 'package:flutter_restaurant/data/model/body/place_order_body.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
-import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -76,6 +75,8 @@ class _CartBookTableState extends State<CartBookTable> {
         .then((value) {
       Provider.of<BookTableProvider>(context, listen: false)
           .addItemsToCart(context);
+      Provider.of<CartProvider>(context, listen: false)
+          .getCartData(type: 'buffet');
       _cartList = [];
       _cartList
           .addAll(Provider.of<CartProvider>(context, listen: false).cartList);
@@ -101,7 +102,7 @@ class _CartBookTableState extends State<CartBookTable> {
               child: WebAppBar(), preferredSize: Size.fromHeight(100))
           : CustomAppBar(
               context: context,
-              title: getTranslated('my_cart', context),
+              title: getTranslated('my_booking', context),
               isBackButtonExist: !ResponsiveHelper.isMobile(context)),
       body: Consumer<OrderProvider>(builder: (context, order, child) {
         return Consumer<CartProvider>(

@@ -12,15 +12,14 @@ class CartModel {
   String _type;
 
   CartModel(
-    double price,
-    double discountedPrice,
-    List<Variation> variation,
-    double discountAmount,
-    int quantity,
-    double taxAmount,
-    List<AddOn> addOnIds,
-    Product product,
-  ) {
+      double price,
+      double discountedPrice,
+      List<Variation> variation,
+      double discountAmount,
+      int quantity,
+      double taxAmount,
+      List<AddOn> addOnIds,
+      Product product) {
     this._price = price;
     this._discountedPrice = discountedPrice;
     this._variation = variation;
@@ -56,6 +55,7 @@ class CartModel {
     }
     _discountAmount = json['discount_amount'].toDouble();
     _quantity = json['quantity'];
+    _type = json['type'];
     _taxAmount = json['tax_amount'].toDouble();
     if (json['add_on_ids'] != null) {
       _addOnIds = [];
@@ -82,6 +82,7 @@ class CartModel {
       data['add_on_ids'] = this._addOnIds.map((v) => v.toJson()).toList();
     }
     data['product'] = this._product.toJson();
+    data['type'] = this._type;
     return data;
   }
 }

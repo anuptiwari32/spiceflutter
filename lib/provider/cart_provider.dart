@@ -15,7 +15,7 @@ class CartProvider extends ChangeNotifier {
   double get amount => _amount;
   bool get isCartUpdate => _isCartUpdate;
 
-  void getCartData({String type = "Normal"}) {
+  void getCartData({String type = "normal"}) {
     _cartList = [];
     _cartList.addAll(cartRepo.getCartList(type: type));
     _cartList.forEach((cart) {
@@ -23,7 +23,7 @@ class CartProvider extends ChangeNotifier {
     });
   }
 
-  String getCartLength({String type = "Normal"}) {
+  String getCartLength({String type = "normal"}) {
     return cartRepo.getCartList(type: type).length.toString();
   }
 

@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart';
@@ -435,17 +436,26 @@ class _TableBookCard extends State<TableBookCard> {
                       context, Routes.getLoginRoute());
                   order.addTableBookData(data);
                 } else {
-                  order
-                      .checkAvailability(dropdownValue.id.toString(),
-                          datepicker.text, slot, context)
-                      .then((value) {
-                    if (order.isAvailable) {
-                      order.addTableBookData(data);
-                      order.addItemsToCart(context);
-                      Navigator.pushReplacementNamed(
-                          context, Routes.getDashboardRoute('book'));
-                    }
-                  });
+                  if (slots.length == 0)
+                    showCustomSnackBar(
+                        'There is not available slot for booking', context,
+                        isError: true);
+                  else if (slot == '')
+                    showCustomSnackBar(
+                        'Please Select the time slot for booking', context,
+                        isError: true);
+                  else
+                    order
+                        .checkAvailability(dropdownValue.id.toString(),
+                            datepicker.text, slot, context)
+                        .then((value) {
+                      if (order.isAvailable) {
+                        order.addTableBookData(data);
+                        order.addItemsToCart(context);
+                        Navigator.pushReplacementNamed(
+                            context, Routes.getDashboardRoute('book'));
+                      }
+                    });
 
                   //
                 }
