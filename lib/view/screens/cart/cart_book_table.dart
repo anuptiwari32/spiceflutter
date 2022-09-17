@@ -42,6 +42,7 @@ class _CartBookTableState extends State<CartBookTable> {
   List<Branches> _branches = [];
   bool _isLoggedIn;
   List<CartModel> _cartList;
+  Map<String, dynamic> _tableData = new Map<String, dynamic>();
   @override
   void initState() {
     super.initState();
@@ -87,6 +88,8 @@ class _CartBookTableState extends State<CartBookTable> {
       'buffet',
       notify: false,
     );
+    _tableData = Provider.of<BookTableProvider>(context, listen: false)
+        .getTableBookData();
   }
 
   @override
@@ -151,6 +154,82 @@ class _CartBookTableState extends State<CartBookTable> {
             return cart.cartList.length > 0
                 ? Column(
                     children: [
+                      Container(
+                        width: 1150,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: ColorResources.CARD_SHADOW_COLOR
+                                    .withOpacity(0.2),
+                                blurRadius: 10,
+                              )
+                            ]),
+                        margin: EdgeInsets.all(0),
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        '${getTranslated('booking_date', context)}:',
+                                        style: rubikRegular.copyWith(
+                                            fontSize:
+                                                Dimensions.FONT_SIZE_SMALL)),
+                                    SizedBox(
+                                        width: Dimensions
+                                            .PADDING_SIZE_EXTRA_SMALL),
+                                    Text(_tableData['date'],
+                                        style: rubikMedium.copyWith(
+                                            fontSize:
+                                                Dimensions.FONT_SIZE_SMALL)),
+                                  ]),
+                              SizedBox(height: 10),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        '${getTranslated('booking_time', context)}:',
+                                        style: rubikRegular.copyWith(
+                                            fontSize:
+                                                Dimensions.FONT_SIZE_SMALL)),
+                                    SizedBox(
+                                        width: Dimensions
+                                            .PADDING_SIZE_EXTRA_SMALL),
+                                    Text(_tableData['time'],
+                                        style: rubikMedium.copyWith(
+                                            fontSize:
+                                                Dimensions.FONT_SIZE_SMALL)),
+                                  ]),
+                              SizedBox(height: 10),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        '${getTranslated('address', context)}:',
+                                        style: rubikRegular.copyWith(
+                                            fontSize:
+                                                Dimensions.FONT_SIZE_SMALL)),
+                                    SizedBox(
+                                        width: Dimensions
+                                            .PADDING_SIZE_EXTRA_SMALL),
+                                    Text(
+                                        _branches
+                                            .where((element) =>
+                                                element.id ==
+                                                _tableData['branch_id'])
+                                            .first
+                                            .address,
+                                        style: rubikMedium.copyWith(
+                                            fontSize:
+                                                Dimensions.FONT_SIZE_SMALL)),
+                                  ])
+                            ]),
+                      ),
                       Expanded(
                         child: Scrollbar(
                           child: SingleChildScrollView(
@@ -244,7 +323,6 @@ class _CartBookTableState extends State<CartBookTable> {
                                                             addOns: _addOnsList,
                                                             availableList:
                                                                 _availableList),
-
                                                       // Coupon
                                                       Consumer<CouponProvider>(
                                                         builder: (context,
@@ -635,9 +713,7 @@ class _CartBookTableState extends State<CartBookTable> {
 
   void processOrder(OrderProvider order, double _total, BuildContext context) {
     bool _isAvailable = true;
-    Map<String, dynamic> _tabledata =
-        Provider.of<BookTableProvider>(context, listen: false)
-            .getTableBookData();
+
     // DateTime _scheduleStartDate = DateTime.now();
     // DateTime _scheduleEndDate = DateTime.now();
     // if (order.timeSlots == null || order.timeSlots.length == 0) {
@@ -722,11 +798,11 @@ class _CartBookTableState extends State<CartBookTable> {
             ? _couponController.text.toString()
             : null,
         distance: 0,
-        branchId: _tabledata.isNotEmpty
-            ? _tabledata['branch_id']
+        branchId: _tableData.isNotEmpty
+            ? _tableData['branch_id']
             : _branches[order.branchIndex].id,
-        deliveryDate: _tabledata['date'],
-        deliveryTime: _tabledata['time'],
+        deliveryDate: _tableData['date'],
+        deliveryTime: _tableData['time'],
       );
       order.placeOrder(_placeOrderBody, _callback);
     }
