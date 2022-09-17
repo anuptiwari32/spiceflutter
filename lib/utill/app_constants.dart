@@ -6,7 +6,7 @@ class AppConstants {
   static const double APP_VERSION = 8.0;
   //static const String BASE_URL = 'https://efood-admin.6amtech.com';
   static const String BASE_URL =
-      'http://ec2-43-205-38-127.ap-south-1.compute.amazonaws.com/backend'; // 'https://efood-admin.6amtech.com';
+      'http://admin.spiceheavenrestaurant.com'; // 'https://efood-admin.6amtech.com';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String BANNER_URI = '/api/v1/banners';
   static const String LATEST_PRODUCT_URI = '/api/v1/products/latest';

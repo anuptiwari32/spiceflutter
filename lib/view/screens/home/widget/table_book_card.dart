@@ -13,7 +13,6 @@ import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart';
 
 class TableBookCard extends StatefulWidget {
   @override
@@ -87,7 +86,9 @@ class _TableBookCard extends State<TableBookCard> {
         Container(
             width: ResponsiveHelper.isDesktop(context) ? 380 : 1170,
             height: 450,
-            padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+            padding: ResponsiveHelper.isMobile(context)
+                ? const EdgeInsets.all(0)
+                : const EdgeInsets.fromLTRB(15, 30, 15, 0),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(10),
@@ -98,7 +99,9 @@ class _TableBookCard extends State<TableBookCard> {
                     spreadRadius: 1)
               ],
             ),
-            margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+            margin: ResponsiveHelper.isMobile(context)
+                ? const EdgeInsets.all(0)
+                : const EdgeInsets.fromLTRB(10, 10, 20, 10),
             child: Column(children: <Widget>[
               Container(
                   alignment: Alignment.centerLeft,
@@ -397,7 +400,25 @@ class _TableBookCard extends State<TableBookCard> {
                             ),
                             icon: Icon(Icons.alarm, color: Colors.red)),
                         mode: Mode.MENU,
-
+                        showSearchBox: true,
+                        searchFieldProps: const TextFieldProps(
+                            cursorColor: Colors.black,
+                            decoration: InputDecoration(
+                              labelText: "Search slots",
+                              hintText: "Select Slot",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.red, width: 1.0),
+                              ),
+                            )),
                         // focusColor: Colors.red,
                         dropdownButtonProps: const IconButtonProps(
                           icon: Icon(
