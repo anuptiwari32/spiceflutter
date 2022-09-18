@@ -76,9 +76,9 @@ const RESOURCES = {
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
 "favicon.png": "1e06438e01817b1800ba711038d231b7",
 "firebase-messaging-sw.js": "d30b94742c3d526de982b0c741af38f4",
-"icons/efood_bike.png": "1e06438e01817b1800ba711038d231b7",
-"icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
-"icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
+"logos/logo.png": "1e06438e01817b1800ba711038d231b7",
+"logos/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
+"logos/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "index.html": "322c2c1a01bb35324d873b3ae6f50bfd",
 "/": "322c2c1a01bb35324d873b3ae6f50bfd",
 "loader.gif": "5bc723f8545ce7c528cf370c5aa54f67",
@@ -109,6 +109,19 @@ self.addEventListener("install", (event) => {
   );
 });
 
+self.addEventListener('fetch', function(event) {
+  event.respondWith(async function() {
+     try{
+       var res = await fetch(event.request);
+       var cache = await caches.open('cache');
+       cache.put(event.request.url, res.clone());
+       return res;
+     }
+     catch(error){
+       return caches.match(event.request);
+      }
+    }());
+});
 // During activate, the cache is populated with the temp files downloaded in
 // install. If this service worker is upgrading from one with a saved
 // MANIFEST, then use this to retain unchanged resource files.

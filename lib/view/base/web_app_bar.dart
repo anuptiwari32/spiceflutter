@@ -20,6 +20,7 @@ import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
 import 'package:flutter_restaurant/view/base/on_hover.dart';
+import 'package:flutter_restaurant/view/screens/category/category_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/cetegory_hover_widget.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/languageHover_widget.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/status_widget.dart';
@@ -30,17 +31,18 @@ import 'package:provider/provider.dart';
 class WebAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   State<WebAppBar> createState() => _WebAppBarState();
-
   @override
   Size get preferredSize => throw UnimplementedError();
 }
 
 class _WebAppBarState extends State<WebAppBar> {
+  List<CategoryModel> _categoryList;
+
   List<PopupMenuEntry<Object>> popUpMenuList(BuildContext context) {
     print(Provider.of<SplashProvider>(context).configModel.branches);
 
     List<PopupMenuEntry<Object>> list = <PopupMenuEntry<Object>>[];
-    List<CategoryModel> _categoryList =
+    _categoryList =
         Provider.of<CategoryProvider>(context, listen: false).categoryList;
     list.add(PopupMenuItem(
       padding: EdgeInsets.zero,
@@ -92,6 +94,8 @@ class _WebAppBarState extends State<WebAppBar> {
         Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
     Provider.of<LanguageProvider>(context, listen: false)
         .initializeAllLanguages(context);
+    _categoryList = Provider.of<CategoryProvider>(context).categoryList;
+
     final LanguageModel _currentLanguage = AppConstants.languages.firstWhere(
         (language) =>
             language.languageCode ==
@@ -251,6 +255,7 @@ class _WebAppBarState extends State<WebAppBar> {
                           ],
                         ),
                       ),
+
                       OnHover(builder: (isHover) {
                         return InkWell(
                           onTap: () {
@@ -261,6 +266,37 @@ class _WebAppBarState extends State<WebAppBar> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: Dimensions.PADDING_SIZE_DEFAULT),
                             child: Text(getTranslated('home', context),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: rubikRegular.copyWith(
+                                    color: isHover
+                                        ? Theme.of(context).primaryColor
+                                        : ColorResources.getWhiteAndBlack(
+                                            context),
+                                    fontSize: Dimensions.FONT_SIZE_LARGE)),
+                          ),
+                        );
+                      }),
+                      OnHover(builder: (isHover) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.getCategoryRoute(_categoryList
+                                  .where((element) => element.name == "Buffet")
+                                  .first
+                                  .id),
+                              arguments: CategoryScreen(
+                                  categoryModel: _categoryList
+                                      .where(
+                                          (element) => element.name == "Buffet")
+                                      .first),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_DEFAULT),
+                            child: Text(getTranslated('buffet', context),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: rubikRegular.copyWith(

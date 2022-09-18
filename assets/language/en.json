@@ -11,6 +11,7 @@
   "checkout": "Checkout",
   "delivery_address": "Delivery Address",
   "add": "Add",
+  "buffet": "Buffet",
   "payment_method": "Payment Method",
   "cash_on_delivery": "Cash On Delivery",
   "digital_payment": "Digital Payment",
