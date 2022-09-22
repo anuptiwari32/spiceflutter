@@ -72,7 +72,8 @@ class RouterHelper {
       handlerFunc: (context, Map<String, dynamic> params) => WelcomeScreen());
 
   static Handler _loginHandler = Handler(
-      handlerFunc: (context, Map<String, dynamic> params) => LoginScreen());
+      handlerFunc: (context, Map<String, dynamic> params) =>
+          LoginScreen(fromTable: params['page'][0].toString() ?? ''));
 
   static Handler _signUpHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> params) => SignUpScreen());

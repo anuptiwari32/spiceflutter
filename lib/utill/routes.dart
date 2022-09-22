@@ -5,7 +5,6 @@ import 'package:flutter_restaurant/data/model/response/address_model.dart';
 import 'package:flutter_restaurant/data/model/response/order_model.dart';
 
 class Routes {
-
   static const String SPLASH_SCREEN = '/splash';
   static const String LANGUAGE_SCREEN = '/select-language';
   static const String ONBOARDING_SCREEN = '/onboarding';
@@ -48,17 +47,20 @@ class Routes {
   static const String ORDER_WEB_PAYMENT = '/order-web-payment';
   static const String POPULAR_ITEM_ROUTE = '/POPULAR_ITEM_ROUTE';
 
-
   static String getSplashRoute() => SPLASH_SCREEN;
   static String getLanguageRoute(String page) => '$LANGUAGE_SCREEN?page=$page';
   static String getOnBoardingRoute() => ONBOARDING_SCREEN;
   static String getWelcomeRoute() => WELCOME_SCREEN;
-  static String getLoginRoute() => LOGIN_SCREEN;
+  static String getLoginRoute({String table = ""}) =>
+      '$LOGIN_SCREEN?page=$table';
   static String getSignUpRoute() => SIGNUP_SCREEN;
   static String getForgetPassRoute() => FORGOTPASS_SCREEN;
-  static String getNewPassRoute(String email, String token) => '$CREATENEWPASS_SCREEN?email=$email&token=$token';
-  static String getVerifyRoute(String page, String email) => '$VERIFY?page=$page&email=$email';
-  static String getCreateAccountRoute(String email) => '$CREATEACCOUNT_SCREEN?email=$email';
+  static String getNewPassRoute(String email, String token) =>
+      '$CREATENEWPASS_SCREEN?email=$email&token=$token';
+  static String getVerifyRoute(String page, String email) =>
+      '$VERIFY?page=$page&email=$email';
+  static String getCreateAccountRoute(String email) =>
+      '$CREATEACCOUNT_SCREEN?email=$email';
   static String getMainRoute() => DASHBOARD;
   static String getMaintainRoute() => MAINTAIN;
   static String getUpdateRoute() => UPDATE;
@@ -66,22 +68,37 @@ class Routes {
     String appBar = fromAppBar ?? 'false';
     return '$HOME_SCREEN?from=$appBar';
   }
-  static String getDashboardRoute(String page) => '$DASHBOARD_SCREEN?page=$page';
+
+  static String getDashboardRoute(String page) =>
+      '$DASHBOARD_SCREEN?page=$page';
   static String getSearchRoute() => SEARCH_SCREEN;
   static String getSearchResultRoute(String text) {
     List<int> _encoded = utf8.encode(text);
     String _data = base64Encode(_encoded);
     return '$SEARCH_RESULT_SCREEN?text=$_data';
   }
+
   static String getSetMenuRoute() => SET_MENU_SCREEN;
   static String getNotificationRoute() => NOTIFICATION_SCREEN;
   static String getCategoryRoute(int id) => '$CATEGORY_SCREEN?id=$id';
-  static String getCheckoutRoute(double amount, String page, String type, String code) => '$CHECKOUT_SCREEN?amount=$amount&page=$page&type=$type&code=$code';
-  static String getPaymentRoute({@required String page, String id, int user, String selectAddress, PlaceOrderBody placeOrderBody}) {
-    String _address = selectAddress != null ? base64Encode(utf8.encode(selectAddress)) : 'null';
-    String _data = placeOrderBody != null ? base64Url.encode(utf8.encode(jsonEncode(placeOrderBody.toJson()))) : 'null';
+  static String getCheckoutRoute(
+          double amount, String page, String type, String code) =>
+      '$CHECKOUT_SCREEN?amount=$amount&page=$page&type=$type&code=$code';
+  static String getPaymentRoute(
+      {@required String page,
+      String id,
+      int user,
+      String selectAddress,
+      PlaceOrderBody placeOrderBody}) {
+    String _address = selectAddress != null
+        ? base64Encode(utf8.encode(selectAddress))
+        : 'null';
+    String _data = placeOrderBody != null
+        ? base64Url.encode(utf8.encode(jsonEncode(placeOrderBody.toJson())))
+        : 'null';
     return '$PAYMENT_SCREEN?page=$page&id=$id&user=$user&address=$_address&place_order=$_data';
   }
+
   static String getOrderDetailsRoute(int id) => '$ORDER_DETAILS_SCREEN?id=$id';
   static String getRateReviewRoute() => RATE_SCREEN;
   static String getOrderTrackingRoute(int id) => '$ORDERTRAKING_SCREEN?id=$id';
@@ -92,15 +109,20 @@ class Routes {
     String _data = base64Encode(_encoded);
     return '$MAP_SCREEN?address=$_data';
   }
-  static String getAddAddressRoute(String page, String action, AddressModel addressModel) {
-    String _data = base64Url.encode(utf8.encode(jsonEncode(addressModel.toJson())));
+
+  static String getAddAddressRoute(
+      String page, String action, AddressModel addressModel) {
+    String _data =
+        base64Url.encode(utf8.encode(jsonEncode(addressModel.toJson())));
     return '$ADD_ADDRESS_SCREEN?page=$page&action=$action&address=$_data';
   }
+
   static String getSelectLocationRoute() => SELECTLOCATION_SCREEN;
   static String getChatRoute({OrderModel orderModel}) {
     String _orderModel = base64Encode(utf8.encode(jsonEncode(orderModel)));
     return '$CHAT_SCREEN?order=$_orderModel';
   }
+
   static String getCouponRoute() => COUPON_SCREEN;
   static String getSupportRoute() => SUPPORT_SCREEN;
   static String getTermsRoute() => TERMS_SCREEN;

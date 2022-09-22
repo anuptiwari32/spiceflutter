@@ -272,8 +272,8 @@ class _TableBookCard extends State<TableBookCard> {
                                 DateTime pickedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(
-                                        2000), //DateTime.now() - not to allow to choose before today.
+                                    firstDate: DateTime
+                                        .now(), // DateTime(2101)- not to allow to choose before today.
                                     lastDate: DateTime(2101),
                                     builder: (context, child) {
                                       return Theme(
@@ -446,40 +446,43 @@ class _TableBookCard extends State<TableBookCard> {
               : MediaQuery.of(context).size.width / 2 - 70,
           child: InkWell(
               onTap: () {
-                Map<String, dynamic> data = Map<String, dynamic>();
-                data['branch_id'] = dropdownValue.id;
-                data['date'] = datepicker.text.toString();
-                data['session'] = eatingTime;
-                data['day'] = eatingDay;
-                data['time'] = slot;
-                if (!_isLoggedIn) {
-                  Navigator.pushReplacementNamed(
-                      context, Routes.getLoginRoute());
-                  order.addTableBookData(data);
-                } else {
-                  if (slots.length == 0)
-                    showCustomSnackBar(
-                        'There is not available slot for booking', context,
-                        isError: true);
-                  else if (slot == '')
-                    showCustomSnackBar(
-                        'Please Select the time slot for booking', context,
-                        isError: true);
-                  else
-                    order
-                        .checkAvailability(dropdownValue.id.toString(),
-                            datepicker.text, slot, context)
-                        .then((value) {
-                      if (order.isAvailable) {
+                order
+                    .checkAvailability(dropdownValue.id.toString(),
+                        datepicker.text, slot, context)
+                    .then((value) {
+                  if (order.isAvailable) {
+                    Map<String, dynamic> data = Map<String, dynamic>();
+                    data['branch_id'] = dropdownValue.id;
+                    data['date'] = datepicker.text.toString();
+                    data['session'] = eatingTime;
+                    data['day'] = eatingDay;
+                    data['time'] = slot;
+                    if (!_isLoggedIn) {
+                      Navigator.pushReplacementNamed(
+                          context, Routes.getLoginRoute(table: 'table'));
+                      order.addTableBookData(data);
+                    } else {
+                      if (slots.length == 0)
+                        showCustomSnackBar(
+                            'There is not available slot for booking', context,
+                            isError: true);
+                      else if (slot == '')
+                        showCustomSnackBar(
+                            'Please Select the time slot for booking', context,
+                            isError: true);
+                      else {
                         order.addTableBookData(data);
                         order.addItemsToCart(context);
                         Navigator.pushReplacementNamed(
                             context, Routes.getDashboardRoute('book'));
                       }
-                    });
+                    }
 
-                  //
-                }
+                    //
+                  } else
+                    showCustomSnackBar('Booking not available', context,
+                        isError: true);
+                });
               },
               child: Center(
                   child: AvatarGlow(
